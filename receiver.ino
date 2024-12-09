@@ -10,10 +10,9 @@ int IN4 = 5;
 
 
 void setup() {
-  //this is to have the hc05's pair one as slave and the other as master
   BTSerial.begin(38400);
   Serial.begin(38400);      
-  Serial.println("Slave:");   
+ // Serial.println("Slave:");   
     
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
@@ -27,28 +26,52 @@ void setup() {
 }
 
 void  loop() {
-  //these is recieving the signal and behaving according to it 
+  //play with values
   if(BTSerial.available()>0)
   { 
     message=BTSerial.read();
     Serial.println(message);
 
-    if(message == 48){
-      backward();
-      delay(2000);
+    if(message == '0'){
+      Serial.println("Reverse");
+      reverse();
+      delay(200);
     }
-    if (message==49){
+     if (message== '1'){
+      Serial.println("Forward");
       forward();
-      delay(2000);
+      delay(200);
     }
-    if  (message == 50){
+     if  (message == '2'){
+      Serial.println("Stop");
       stopCar();
-      delay(2000);
+      delay(200);
     }
+
+     if  (message == '3'){
+      Serial.println("Left");
+      turnLeft();
+      delay(200);
+    }
+
+    if  (message == '4'){
+      Serial.println("Right");
+      turnRight();
+      delay(200);
+    }
+
+    
+
+   
   }
 }
 
-
+void turnLeft(){
+digitalWrite(IN1, LOW);
+digitalWrite(IN2, LOW);
+digitalWrite(IN3, HIGH);
+digitalWrite(IN4, LOW);
+}
 
 void forward(){
 digitalWrite(IN1, LOW);
@@ -64,10 +87,16 @@ digitalWrite(IN3, LOW);
 digitalWrite(IN4, LOW);
 }    
 
-void backward(){
+void reverse(){
 digitalWrite(IN1, HIGH);
 digitalWrite(IN2, LOW);
 digitalWrite(IN3, LOW);
 digitalWrite(IN4, HIGH);
 }
 
+void turnRight(){
+digitalWrite(IN1, LOW);
+digitalWrite(IN2, HIGH);
+digitalWrite(IN3, LOW);
+digitalWrite(IN4, LOW);
+}
